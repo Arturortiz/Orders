@@ -10,7 +10,9 @@ builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=LocalConnec
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+//para establecerle seguridad, si no se lo establcezco no me dejara consumir la api de la base de datos mediante el front
+app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials());
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
