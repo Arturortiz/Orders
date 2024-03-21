@@ -1,0 +1,40 @@
+﻿@page "/countries"
+@inject IRepository repository
+<h3>Paises</h3>
+
+@if(Countries == null)
+{
+    <p>Cargando...</p>
+}else{
+    <table class="table table-striped "> <!--Bootstrap -->
+        <thead>
+            <tr>
+                <th>País</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var country in Countries!) //le indicamos la ! pq puede ser nulo que no halla ningun pais almacenado
+            {                                    //hacemos un for each de la lista creada abajo Countries
+                <tr>
+                    <td>@country.Name</td>
+                    <td>
+                        <a class="btn btn-warning">Editar</a>
+                        <Button class="btn btn-danger">Borrar</Button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    public List<Country>? Countries { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var responseHttp = await repository.GetAsync<List<Country>>("api/countries"); //estamos yendo al backend y rellenando una lista con los paises || se pone la url del controlador del back
+        Countries = responseHttp.Response;                                            
+    }
+}
