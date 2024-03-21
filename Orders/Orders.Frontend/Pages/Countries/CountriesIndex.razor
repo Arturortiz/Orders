@@ -1,12 +1,14 @@
 ﻿@page "/countries"
-@inject IRepository repository
+@*  @inject IRepository repository *@
 <h3>Paises</h3>
 
-@if(Countries == null)
-{
-    <p>Cargando...</p>
-}else{
-    <table class="table table-striped "> <!--Bootstrap -->
+<div class="d-flex justify-content-center aling-items-center">
+    <a class="btn btn-primary" href="/countries/create">Nuevo País</a>
+</div>
+
+<GenericList MyList="Countries">
+    <Body>
+        <table class="table table-striped "> <!--Bootstrap -->
         <thead>
             <tr>
                 <th>País</th>
@@ -20,14 +22,18 @@
                     <td>@country.Name</td>
                     <td>
                         <a class="btn btn-warning">Editar</a>
-                        <Button class="btn btn-danger">Borrar</Button>
+                        <button class="btn btn-danger">Borrar</button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-}
 
+    </Body>
+</GenericList>
+
+@* 
+Hemos decidido crea una clase .razor.cs para que este el codigo mas ordenado, aqui va a estar solo el puro codigo html y en la clase que hemos creado estara el restod e codigo
 @code {
     public List<Country>? Countries { get; set; }
 
@@ -37,4 +43,5 @@
         var responseHttp = await repository.GetAsync<List<Country>>("api/countries"); //estamos yendo al backend y rellenando una lista con los paises || se pone la url del controlador del back
         Countries = responseHttp.Response;                                            
     }
-}
+*@
+
