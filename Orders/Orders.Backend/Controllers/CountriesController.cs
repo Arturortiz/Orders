@@ -19,7 +19,7 @@ namespace Orders.Backend.Controllers
         [HttpGet]//visualizar todos los countries, por eso lo hacemos sin parametros
         public async Task<IActionResult> GetAsync() 
         {
-            return Ok(await _context.Countries.ToListAsync());
+            return Ok(await _context.Countries.AsNoTracking().ToListAsync()); //añadido el AsNoTracking, para la lectura de consultas más complejas.
         }
         
         [HttpGet("{id}")]//visualizar el country por id
