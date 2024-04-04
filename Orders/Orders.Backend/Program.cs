@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//hacer la conexion con la bd
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=LocalConnection"));
 
 var app = builder.Build();
