@@ -1,11 +1,10 @@
-﻿namespace Orders.Frontend.Repositories
-{
-    // con el httpresponsewrapped se va a encargar de envolver todas las respuestas del back y recogerlas para usarlas en el front
+﻿using System.Net;
 
+namespace Orders.Frontend.Repositories
+{
     public class HttpResponseWrapper<T>
     {
-
-        public HttpResponseWrapper(T? response, bool error, HttpResponseMessage httpResponseMessage) 
+        public HttpResponseWrapper(T? response, bool error, HttpResponseMessage httpResponseMessage)
         {
             Response = response;
             Error = error;
@@ -18,27 +17,27 @@
 
         public async Task<string?> GetErrorMessageAsync()
         {
-            if(!Error) 
-            { 
+            if (!Error)
+            {
                 return null;
             }
 
             var statusCode = HttpResponseMessage.StatusCode;
-            if(statusCode == System.Net.HttpStatusCode.NotFound) 
+            if (statusCode == HttpStatusCode.NotFound)
             {
-                return "Recurso no encontrado";
+                return "Recurso no encontrado.";
             }
-            if(statusCode == System.Net.HttpStatusCode.BadRequest) 
+            if (statusCode == HttpStatusCode.BadRequest)
             {
                 return await HttpResponseMessage.Content.ReadAsStringAsync();
             }
-            if(statusCode == System.Net.HttpStatusCode.Unauthorized) 
+            if (statusCode == HttpStatusCode.Unauthorized)
             {
-                return "Tienes que estar logeado para ejecutar esta operacion";
+                return "Tienes que estar logueado para ejecutar esta operación.";
             }
-            if(statusCode == System.Net.HttpStatusCode.Forbidden) 
+            if (statusCode == HttpStatusCode.Forbidden)
             {
-                return "No tienes permisos para hacer esta operacion";
+                return "No tienes permisos para hacer esta operación";
             }
 
             return "Ha ocurrido un error inesperado";

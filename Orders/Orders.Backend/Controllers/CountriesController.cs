@@ -50,7 +50,7 @@ namespace Orders.Backend.Controllers
         }
         
         [HttpDelete]// eliminar country
-        public async Task<IActionResult> DeleteAsync(int id) 
+        public async Task<IActionResult> DeleteAsync(int id)
         {
             var country = await _context.Countries.FindAsync(id);
             if (country == null)
