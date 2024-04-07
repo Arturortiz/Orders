@@ -9,12 +9,14 @@ namespace Orders.Backend.Data
         { 
         }
 
-        public DbSet<Country> Countries {  get; set; } //creacion de la tabla
+        public DbSet<Country> Countries {  get; set; }//creacion de la tabla
+        public DbSet<Country> Categories {  get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Country>().HasIndex(x => x.Name).IsUnique();
+            modelBuilder.Entity<Category>().HasIndex(x => x.Name).IsUnique();
         }
     }
 }
