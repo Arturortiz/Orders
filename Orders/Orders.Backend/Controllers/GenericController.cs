@@ -1,12 +1,13 @@
-﻿using Orders.Backend.UnitsOfWork.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
+using Orders.Backend.UnitsOfWork.Interfaces;
 
 namespace Orders.Backend.Controllers
 {
     public class GenericController<T> : Controller where T : class
     {
-        private readonly IGenericUnitOfWork _unitOfWork;
+        private readonly IGenericUnitOfWork<T> _unitOfWork;
 
-        public GenericController(IGenericUnitOfWork unitOfWork)
+        public GenericController(IGenericUnitOfWork<T> unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -17,7 +18,7 @@ namespace Orders.Backend.Controllers
         public virtual async Task<IActionResult> GetAsync()
         {
             var action = await _unitOfWork.GetAsync();
-            if (action.wasSucces)
+            if (action.wasSuccess)
             {
                 return Ok(action.Result);
             }
@@ -25,10 +26,10 @@ namespace Orders.Backend.Controllers
         }
 
         [HttpGet("{id}")]
-        public virtual async Task<IActionResult> GetAsync()
+        public virtual async Task<IActionResult> GetAsync(int id)
         {
             var action = await _unitOfWork.GetAsync(id);
-            if (action.wasSucces)
+            if (action.wasSuccess)
             {
                 return Ok(action.Result);
             }
@@ -36,10 +37,10 @@ namespace Orders.Backend.Controllers
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> PostAsync()
+        public virtual async Task<IActionResult> PostAsync(T model)
         {
-            var action = await _unitOfWork.AddAsync();
-            if (action.wasSucces)
+            var action = await _unitOfWork.AddAsync(model);
+            if (action.wasSuccess)
             {
                 return Ok(action.Result);
             }
@@ -50,7 +51,7 @@ namespace Orders.Backend.Controllers
         public virtual async Task<IActionResult> PutAsync(T model)
         {
             var action = await _unitOfWork.UpdateAsync(model);
-            if (action.wasSucces)
+            if (action.wasSuccess)
             {
                 return Ok(action.Result);
             }
@@ -60,8 +61,8 @@ namespace Orders.Backend.Controllers
         [HttpDelete("{id}")]
         public virtual async Task<IActionResult> DeleteAsync(int id)
         {
-            var action = await _unitOfWork.UpdateAsync(id);
-            if (action.wasSucces)
+            var action = await _unitOfWork.DeleteAsync(id);
+            if (action.wasSuccess)
             {
                 return NoContent();
             }

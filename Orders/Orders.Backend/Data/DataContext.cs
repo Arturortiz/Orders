@@ -9,8 +9,10 @@ namespace Orders.Backend.Data
         { 
         }
 
-        public DbSet<Country> Countries {  get; set; }//creacion de la tabla
-        public DbSet<Country> Categories {  get; set; } 
+        //creacion de la tabla
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Country> Countries {  get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
