@@ -9,7 +9,7 @@ namespace Orders.Backend.Data
         { 
         }
 
-        //creacion de la tabla
+        //creacion de las tablas
         public DbSet<Category> Categories { get; set; }
         public DbSet<Country> Countries {  get; set; }
         
