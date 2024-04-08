@@ -7,16 +7,14 @@ namespace Orders.Backend.Repositories.Implementations
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly DataContext _context; 
-
+        private readonly DataContext _context;
         private readonly DbSet<T> _entity;
-        public GenericRepository(DataContext context)//al repositorio le injectamos el dataContext 
-        {
-            _context = context; 
-            _entity = _context.Set<T>(); //context me va a representar toda la base de datos y entity va a ser la entidad que yo quiero manipular del repositorio
-        }
 
-        //-------------------------------------------------------------------------
+        public GenericRepository(DataContext context)
+        {
+            _context = context;
+            _entity = _context.Set<T>();
+        }
 
         public async Task<ActionResponse<T>> AddAsync(T entity)
         {
@@ -27,27 +25,28 @@ namespace Orders.Backend.Repositories.Implementations
                 return new ActionResponse<T>
                 {
                     wasSuccess = true,
-                    Result = entity,
+                    Result = entity
                 };
-            }catch (DbUpdateException)
-            {
-                return DbUpdateExceptionActionRespones();
             }
-            catch(Exception ex)
+            catch (DbUpdateException)
             {
-                return ExceptionActionResponse(ex);
+                return DbUpdateExceptionActionResponse();
+            }
+            catch (Exception exception)
+            {
+                return ExceptionActionResponse(exception);
             }
         }
 
         public async Task<ActionResponse<T>> DeleteAsync(int id)
         {
-            var row= await _entity.FindAsync(id);
-            if(row == null)
+            var row = await _entity.FindAsync(id);
+            if (row == null)
             {
                 return new ActionResponse<T>
                 {
                     wasSuccess = false,
-                    Message = "Registro no encontrado",
+                    Message = "Registro no encontrado"
                 };
             }
 
@@ -57,15 +56,15 @@ namespace Orders.Backend.Repositories.Implementations
                 await _context.SaveChangesAsync();
                 return new ActionResponse<T>
                 {
-                    wasSuccess = true,
+                    wasSuccess = true
                 };
             }
             catch
             {
                 return new ActionResponse<T>
                 {
-                    wasSuccess= false,
-                    Message="No se pude eliminar porque tiene registros relacionados",
+                    wasSuccess = false,
+                    Message = "No se pude borrar, porque tiene registros relacionados."
                 };
             }
         }
@@ -78,14 +77,14 @@ namespace Orders.Backend.Repositories.Implementations
                 return new ActionResponse<T>
                 {
                     wasSuccess = false,
-                    Message = "Registro no encontrado",
+                    Message = "Registro no encontrado"
                 };
             }
 
             return new ActionResponse<T>
             {
                 wasSuccess = true,
-                Result = row,
+                Result = row
             };
         }
 
@@ -94,7 +93,7 @@ namespace Orders.Backend.Repositories.Implementations
             return new ActionResponse<IEnumerable<T>>
             {
                 wasSuccess = true,
-                Result = await _entity.ToListAsync(),
+                Result = await _entity.ToListAsync()
             };
         }
 
@@ -107,36 +106,34 @@ namespace Orders.Backend.Repositories.Implementations
                 return new ActionResponse<T>
                 {
                     wasSuccess = true,
-                    Result = entity,
+                    Result = entity
                 };
             }
             catch (DbUpdateException)
             {
-                return DbUpdateExceptionActionRespones();//esta excepcion no tiene sentido ????
+                return DbUpdateExceptionActionResponse();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return ExceptionActionResponse(ex);
+                return ExceptionActionResponse(exception);
             }
         }
 
-        //-------------------------------------------------------------------------------------------
-
-        private ActionResponse<T> DbUpdateExceptionActionRespones()
+        private ActionResponse<T> DbUpdateExceptionActionResponse()
         {
             return new ActionResponse<T>
             {
                 wasSuccess = false,
-                Message= "Ya existe el registro que estas intentando crear",
+                Message = "Ya existe el registro que estas intentando crear."
             };
         }
 
-        private ActionResponse<T> ExceptionActionResponse(Exception ex)
+        private ActionResponse<T> ExceptionActionResponse(Exception exception)
         {
             return new ActionResponse<T>
             {
                 wasSuccess = false,
-                Message = ex.Message,
+                Message = exception.Message
             };
         }
     }
