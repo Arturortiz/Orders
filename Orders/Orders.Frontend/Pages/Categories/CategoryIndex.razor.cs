@@ -6,7 +6,7 @@ using System.Net;
 
 namespace Orders.Frontend.Pages.Categories
 {
-    public class CategoryIndex
+    public partial class CategoryIndex
     {
         [Inject] private IRepository repository { get; set; }=null;
         [Inject] private SweetAlertService sweetAlertService { get; set; } = null!;
