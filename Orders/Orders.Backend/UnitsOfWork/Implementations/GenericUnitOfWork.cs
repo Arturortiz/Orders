@@ -1,38 +1,21 @@
-﻿using Orders.Backend.UnitsOfWork.Interfaces;
+﻿using Orders.Backend.Repositories.Interfaces;
+using Orders.Backend.UnitsOfWork.Interfaces;
 using Orders.Shared.Responses;
 
 namespace Orders.Backend.UnitsOfWork.Implementations
 {
     public class GenericUnitOfWork<T> : IGenericUnitOfWork<T> where T : class
     {
-        private readonly IGenericUnitOfWork<T> _repository;
-        public GenericUnitOfWork(IGenericUnitOfWork<T> repository) 
+        private readonly IGenericRepository<T> _repository;
+        public GenericUnitOfWork(IGenericRepository<T> repository)// a la unidad de trabajo le injectamos el repositorio
         {
-            _repository = repository;  
-        }
-        public Task<ActionResponse<T>> AddAsync(T entity)
-        {
-            throw new NotImplementedException();
+            _repository = repository;
         }
 
-        public Task<ActionResponse<T>> DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ActionResponse<T>> GetAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ActionResponse<IEnumerable<T>>> GetAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ActionResponse<T>> UpdateAsync(T entity)
-        {
-            throw new NotImplementedException();
-        }
+        public virtual async Task<ActionResponse<T>> AddAsync(T model) => await _repository.AddAsync(model);
+        public virtual async Task<ActionResponse<T>> DeleteAsync(int id) => await _repository.DeleteAsync(id);
+        public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync() => await _repository.GetAsync();
+        public virtual async Task<ActionResponse<T>> GetAsync(int id) => await _repository.GetAsync(id);
+        public virtual async Task<ActionResponse<T>> UpdateAsync(T model) => await _repository.UpdateAsync(model);
     }
 }

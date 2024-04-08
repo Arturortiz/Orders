@@ -1,14 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Orders.Backend.Data;
+using Orders.Backend.UnitsOfWork.Interfaces;
 using Orders.Shared.Entities;
 
 namespace Orders.Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CountriesController : ControllerBase //heredar de controllerBase
+    public class CountriesController : GenericController<Country>//: ControllerBase //heredar de controllerBase
     {
+
+        public CountriesController(IGenericUnitOfWork<Country> unitOfWork) : base(unitOfWork) //a los controladores le injectamos la unidad de trabajo
+        {
+        }
+        /*
         private readonly DataContext _context;
 
         public CountriesController(DataContext context) 
@@ -61,5 +67,6 @@ namespace Orders.Backend.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+        */
     }
 }
