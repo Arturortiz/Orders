@@ -13,7 +13,7 @@ namespace Orders.Frontend.Pages.Categories
         [Inject] private NavigationManager navigationManager { get; set; } = null!;
         public List<Category>? Categories { get; set; }
 
-        protected async /*override*/ Task OnInitializedAsync()
+        protected async override Task OnInitializedAsync()
         {
             await LoadAsync();
         }

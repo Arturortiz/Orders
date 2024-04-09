@@ -18,7 +18,6 @@ namespace Orders.Frontend.Pages.Countries
             await LoadAsync();
             
         }
-
         private async Task LoadAsync()
         {
             var responseHttp = await repository.GetAsync<List<Country>>("api/countries"); //estamos yendo al backend y rellenando una lista con los paises || se pone la url del controlador del back

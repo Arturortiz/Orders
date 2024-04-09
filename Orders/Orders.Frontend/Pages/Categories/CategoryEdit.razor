@@ -1,6 +1,6 @@
 ﻿@page "/categories/edit/{Id:int}"
 
-<h3>Editar Categoria</h3>
+<h3>Editar Categoría</h3>
 
 @if(category is null)
 {
@@ -8,5 +8,6 @@
 }
 else
 {
-    <CategoryForm @ref="categoryForm" Category="category" OnValidSubmit="EditAsync" ReturnAction="Return" />
+    <!--<CategoryForm @ref="categoryForm" Category="category" OnValidSubmit="EditAsync" ReturnAction="Return" />-->
+    <FormWithName @ref="categoryForm" Label="Categoria: " Model="category" OnValidSubmit="EditAsync" ReturnAction="Return" />
 }
