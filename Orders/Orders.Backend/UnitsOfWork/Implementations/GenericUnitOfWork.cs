@@ -8,7 +8,7 @@ namespace Orders.Backend.UnitsOfWork.Implementations
     {
         private readonly IGenericRepository<T> _repository;
 
-        public GenericUnitOfWork(IGenericRepository<T> repository)
+        public GenericUnitOfWork(IGenericRepository<T> repository)//se le injecta un repositorio
         {
             _repository = repository;
         }

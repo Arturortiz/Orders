@@ -7,7 +7,7 @@ namespace Orders.Backend.Controllers
     {
         private readonly IGenericUnitOfWork<T> _unitOfWork;
 
-        public GenericController(IGenericUnitOfWork<T> unitOfWork)
+        public GenericController(IGenericUnitOfWork<T> unitOfWork)//se le injecta una unidad de trabajo
         {
             _unitOfWork = unitOfWork;
         }

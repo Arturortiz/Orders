@@ -10,7 +10,7 @@ namespace Orders.Backend.Repositories.Implementations
         private readonly DataContext _context;
         private readonly DbSet<T> _entity;
 
-        public GenericRepository(DataContext context)
+        public GenericRepository(DataContext context)//se le injecta un dataContext
         {
             _context = context;
             _entity = _context.Set<T>();
