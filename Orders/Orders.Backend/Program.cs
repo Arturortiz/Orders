@@ -20,6 +20,11 @@ builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=LocalConnec
 //Injeccion del repositorio y de la unidad de trabajo generica
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+//Injectamos
+builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
+builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
+builder.Services.AddScoped<IStatesRepository, StatesRepository>();
+builder.Services.AddScoped<IStatesUnitOfWork, StatesUnitOfWork>();
 
 //Injeccion de la alimentacion de la base de datos
 builder.Services.AddTransient<SeedDB>();
