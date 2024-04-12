@@ -24,6 +24,7 @@ namespace Orders.Backend.Data
             //esto lo hacemos pq puede haber ciudades que se llamen igual pero sean de distintos paises, nos permite que halla dos albuquerques pero en distintos paises o estados.
             modelBuilder.Entity<City>().HasIndex(x=> new {x.StateId, x.Name}).IsUnique();
             modelBuilder.Entity<State>().HasIndex(x=> new {x.CountryId, x.Name}).IsUnique();
+            DisableCascadeDelete(modelBuilder);
         }
         //video 20 min 17
         //Deshabilitar el borrado en cascada
