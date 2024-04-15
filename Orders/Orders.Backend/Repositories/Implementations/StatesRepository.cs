@@ -9,6 +9,7 @@ namespace Orders.Backend.Repositories.Implementations
     public class StatesRepository : GenericRepository<State>, IStatesRepository
     {
         private readonly DataContext _context;
+
         public StatesRepository(DataContext context) : base(context)
         {
             _context = context;
@@ -17,29 +18,31 @@ namespace Orders.Backend.Repositories.Implementations
         public override async Task<ActionResponse<State>> GetAsync(int id)
         {
             var state = await _context.States
-                .Include(c => c.Cities)
-                .FirstOrDefaultAsync(c => c.Id == id);
+                 .Include(s => s.Cities)
+                 .FirstOrDefaultAsync(s => s.Id == id);
+
             if (state == null)
             {
-                new ActionResponse<Country>()
+                return new ActionResponse<State>
                 {
                     wasSuccess = false,
                     Message = "Estado no existe"
                 };
             }
-            return new ActionResponse<State>()
+
+            return new ActionResponse<State>
             {
                 wasSuccess = true,
-
+                Result = state
             };
         }
 
         public override async Task<ActionResponse<IEnumerable<State>>> GetAsync()
         {
             var states = await _context.States
-                .Include(c => c.Cities)
+                .Include(s => s.Cities)
                 .ToListAsync();
-            return new ActionResponse<IEnumerable<State>>()
+            return new ActionResponse<IEnumerable<State>>
             {
                 wasSuccess = true,
                 Result = states

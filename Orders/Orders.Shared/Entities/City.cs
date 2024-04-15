@@ -18,6 +18,6 @@ namespace Orders.Shared.Entities
         public string Name { get; set; } = null!;
         //relacion 1:N con state
         public int StateId { get; set; }
-        public State? State { get; set; }
+        //public State? State { get; set; }
     }
 }

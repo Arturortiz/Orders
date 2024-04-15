@@ -18,7 +18,7 @@ namespace Orders.Shared.Entities
         public string Name { get; set; } = null!;
         //relacion 1:N con country
         public int CountryId { get; set; }
-        public Country? Country { get; set; }//un estado pertenece a un country
+       // public Country? Country { get; set; }//un estado pertenece a un country
         //relacion 1:N con city
         public ICollection<City>? Cities { get; set; }
 
