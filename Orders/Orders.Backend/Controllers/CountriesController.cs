@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Orders.Backend.UnitsOfWork.Interfaces;
+using Orders.Shared.DTOs;
 using Orders.Shared.Entities;
 
 namespace Orders.Backend.Controllers
@@ -17,7 +18,7 @@ namespace Orders.Backend.Controllers
         }
 
         //estos dos HttpGet van a devolver los paises o el pais junto a sus estados o ciudades
-        [HttpGet]
+        [HttpGet("full")]
         public override async Task<IActionResult> GetAsync()
         {
             var response = await _countriesUnitOfWork.GetAsync();
@@ -27,7 +28,18 @@ namespace Orders.Backend.Controllers
             }
             return BadRequest();
         }
-
+        //--------------------------------------------------------------
+        [HttpGet]
+        public override async Task<IActionResult> GetAsync(PaginationDTO pagination)
+        {
+            var response = await _countriesUnitOfWork.GetAsync(pagination);
+            if (response.wasSuccess)
+            {
+                return Ok(response.Result);
+            }
+            return BadRequest();
+        }
+        //--------------------------------------------------------------
         [HttpGet("{id}")]
         public override async Task<IActionResult> GetAsync(int id)
         {
