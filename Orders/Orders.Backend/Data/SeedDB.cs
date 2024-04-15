@@ -21,13 +21,24 @@ namespace Orders.Backend.Data
         {
             if (!_context.Categories.Any())//si no hay categorias
             {
-                _context.Categories.Add(new Category { Name = "Bebida" });
-                _context.Categories.Add(new Category { Name = "Carne" });
-                _context.Categories.Add(new Category { Name = "Pescado" });
+                _context.Categories.Add(new Category { Name = "Apple" });
+                _context.Categories.Add(new Category { Name = "Autos" });
+                _context.Categories.Add(new Category { Name = "Belleza" });
+                _context.Categories.Add(new Category { Name = "Calzado" });
+                _context.Categories.Add(new Category { Name = "Comida" });
+                _context.Categories.Add(new Category { Name = "Cosmeticos" });
+                _context.Categories.Add(new Category { Name = "Deportes" });
+                _context.Categories.Add(new Category { Name = "Erótica" });
+                _context.Categories.Add(new Category { Name = "Ferreteria" });
+                _context.Categories.Add(new Category { Name = "Gamer" });
+                _context.Categories.Add(new Category { Name = "Hogar" });
+                _context.Categories.Add(new Category { Name = "Jardín" });
+                _context.Categories.Add(new Category { Name = "Jugetes" });
+                _context.Categories.Add(new Category { Name = "Lenceria" });
+                _context.Categories.Add(new Category { Name = "Mascotas" });
+                _context.Categories.Add(new Category { Name = "Nutrición" });
                 _context.Categories.Add(new Category { Name = "Ropa" });
-                _context.Categories.Add(new Category { Name = "Cocina" });
-                _context.Categories.Add(new Category { Name = "Bricolage" });
-                _context.Categories.Add(new Category { Name = "Lácteos" });
+                _context.Categories.Add(new Category { Name = "Tecnología" });
                 await _context.SaveChangesAsync();
             }
         }

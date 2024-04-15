@@ -25,6 +25,8 @@ builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
 builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
 builder.Services.AddScoped<IStatesRepository, StatesRepository>();
 builder.Services.AddScoped<IStatesUnitOfWork, StatesUnitOfWork>();
+builder.Services.AddScoped<ICitiesRepository, CitiesRepository>(); 
+builder.Services.AddScoped<ICitiesUnitOfWork, CitiesUnitOfWork>();
 
 //Injeccion de la alimentacion de la base de datos
 builder.Services.AddTransient<SeedDB>();

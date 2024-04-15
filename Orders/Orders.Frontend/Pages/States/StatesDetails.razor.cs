@@ -14,7 +14,7 @@ namespace Orders.Frontend.Pages.States
         [Parameter] public int StateId { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
-        [Inject] private IRepository Repository { get; set; } = null;
+        [Inject] private IRepository Repository { get; set; } = null!;
 
         protected override async Task OnInitializedAsync()
         {

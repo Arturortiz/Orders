@@ -1,16 +1,23 @@
 ﻿@page "/countries"
+
 <h3>Paises</h3>
+
 <div class="mb-3">
     <a class="btn btn-primary" href="/countries/create">Nuevo País</a>
 </div>
+
 <GenericList MyList="Countries">
     <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync" />
+
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>País</th>
-                    <th>Estados</th>
-                    <th></th>
+                    <th style="width:210px">Estados / Departamentos</th>
+                    <th style="width:210px"></th>
                 </tr>
             </thead>
             <tbody>
@@ -20,9 +27,9 @@
                         <td>@country.Name</td>
                         <td>@country.StatesNumber</td>
                         <td>
-                            <a href="/countries/edit/@country.Id" class="btn btn-warning">Editar</a>
+                            <a href="/countries/edit/@country.Id" class="btn btn-sm btn-warning">Editar</a>
                             <a class="btn btn-info btn-sm" href="/countries/details/@country.Id">Detalles</a>
-                            <button @onclick=@(() => DeleteAsync(country)) class="btn btn-danger">Borrar</button>
+                            <button @onclick=@(() => DeleteAsync(country)) class="btn btn-sm btn-danger">Borrar</button>
                         </td>
                     </tr>
                 }
