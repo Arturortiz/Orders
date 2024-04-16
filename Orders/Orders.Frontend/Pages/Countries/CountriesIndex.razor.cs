@@ -13,6 +13,10 @@ namespace Orders.Frontend.Pages.Countries
         [Inject] private IRepository repository { get; set; }=null;
         [Inject] private SweetAlertService sweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager navigationManager { get; set; } = null!;
+
+        [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+
         public List<Country>? Countries { get; set; }
 
         protected async override Task OnInitializedAsync()
@@ -42,6 +46,10 @@ namespace Orders.Frontend.Pages.Countries
 
         private async Task LoadAsync(int page = 1)
         {
+            if (!string.IsNullOrWhiteSpace(Page))
+            {
+                page = Convert.ToInt32(Page);
+            }
             var ok = await LoadListAsync(page);
             if (ok)
             {
@@ -51,7 +59,14 @@ namespace Orders.Frontend.Pages.Countries
 
         private async Task<bool> LoadListAsync(int page)
         {
-            var responseHttp = await repository.GetAsync<List<Country>>($"api/countries?page={page}");
+            var url = $"api/countries?page={page}";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
+
+            var responseHttp = await repository.GetAsync<List<Country>>(url);
+            //var responseHttp = await repository.GetAsync<List<Country>>($"api/countries?page={page}");
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -64,7 +79,14 @@ namespace Orders.Frontend.Pages.Countries
 
         private async Task LoadPagesAsync()
         {
-            var responseHttp = await repository.GetAsync<int>("api/countries/totalPages");
+            var url = "api/countries/totalPages";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"?filter={Filter}";
+            }
+
+            var responseHttp = await repository.GetAsync<int>(url);
+            //var responseHttp = await repository.GetAsync<int>("api/countries/totalPages");
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -72,6 +94,19 @@ namespace Orders.Frontend.Pages.Countries
                 return;
             }
             totalPages = responseHttp.Response;
+        }
+
+        private async Task CleanFilterAsync()
+        {
+            Filter = string.Empty;
+            await ApplyFilterAsync();
+        }
+
+        private async Task ApplyFilterAsync()
+        {
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
         }
 
         private async Task DeleteAsync(Country country) 

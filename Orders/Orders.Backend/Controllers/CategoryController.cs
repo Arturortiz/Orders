@@ -1,16 +1,41 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Orders.Backend.UnitsOfWork.Interfaces;
+using Orders.Shared.DTOs;
 using Orders.Shared.Entities;
 
 namespace Orders.Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CategoryController : GenericController<Category>
+    public class CategoriesController : GenericController<Category>
     {
-        //min 47 vid 11
-        public CategoryController(IGenericUnitOfWork<Category> unitOfWork) : base(unitOfWork) //a los controladores le injectamos la unidad de trabajo
-        { 
+        private readonly ICategoriesUnitOfWork _categoriesUnitOfWork;
+
+        public CategoriesController(IGenericUnitOfWork<Category> unitOfWork, ICategoriesUnitOfWork categoriesUnitOfWork) : base(unitOfWork)
+        {
+            _categoriesUnitOfWork = categoriesUnitOfWork;
+        }
+
+        [HttpGet]
+        public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
+        {
+            var response = await _categoriesUnitOfWork.GetAsync(pagination);
+            if (response.wasSuccess)
+            {
+                return Ok(response.Result);
+            }
+            return BadRequest();
+        }
+
+        [HttpGet("totalPages")]
+        public override async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
+        {
+            var action = await _categoriesUnitOfWork.GetTotalPagesAsync(pagination);
+            if (action.wasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
         }
     }
 }

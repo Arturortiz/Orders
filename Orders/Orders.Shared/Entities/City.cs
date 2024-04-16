@@ -19,5 +19,7 @@ namespace Orders.Shared.Entities
         //relacion 1:N con state
         public int StateId { get; set; }
         public State? State { get; set; }
+
+        public ICollection<User>? Users { get; set; }
     }
 }

@@ -13,6 +13,10 @@ namespace Orders.Frontend.Pages.Categories
         [Inject] private IRepository repository { get; set; }=null;
         [Inject] private SweetAlertService sweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager navigationManager { get; set; } = null!;
+
+        [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;    
+
         public List<Category>? Categories { get; set; }
 
         protected async override Task OnInitializedAsync()
@@ -36,6 +40,11 @@ namespace Orders.Frontend.Pages.Categories
 
         private async Task SelectedPageAsync(int page)
         {
+            if (!string.IsNullOrWhiteSpace(Page))
+            {
+                page = Convert.ToInt32(Page);
+            }
+
             currentPage = page;
             await LoadAsync(page);
         }
@@ -51,7 +60,14 @@ namespace Orders.Frontend.Pages.Categories
 
         private async Task<bool> LoadListAsync(int page)
         {
-            var responseHttp = await repository.GetAsync<List<Category>>($"api/categories?page={page}");
+            var url = $"api/categories/?page={page}";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
+
+            var responseHttp = await repository.GetAsync<List<Category>>(url);
+            //var responseHttp = await repository.GetAsync<List<Category>>($"api/categories?page={page}");
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -64,7 +80,14 @@ namespace Orders.Frontend.Pages.Categories
 
         private async Task LoadPagesAsync()
         {
-            var responseHttp = await repository.GetAsync<int>("api/categories/totalPages");
+            var url = $"api/categories/totalPages";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"?filter={Filter}";
+            }
+
+            var responseHttp = await repository.GetAsync<int>(url);
+            //var responseHttp = await repository.GetAsync<int>("api/categories/totalPages");
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -73,6 +96,20 @@ namespace Orders.Frontend.Pages.Categories
             }
             totalPages = responseHttp.Response;
         }
+
+        private async Task CleanFilterAsync()
+        {
+            Filter = string.Empty;
+            await ApplyFilterAsync();
+        }
+
+        private async Task ApplyFilterAsync()
+        {
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
+        }
+
 
         private async Task DeleteAsync(Category category)
         {
