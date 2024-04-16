@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Orders.Shared.Entities;
 //database-datacontext-repository-unitofwork-controller
 namespace Orders.Backend.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<User>/*DbContext*/
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) //para conectarse a la base de datos
         { 
