@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Components;
 using Orders.Frontend.Repositories;
 using Orders.Shared.Entities;
 using Orders.Frontend.Shared;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Orders.Frontend.Pages.Countries
 {
+    [Authorize(Roles = "Admin")]
     public partial class CountryCreate
     {
         private Country country = new();
